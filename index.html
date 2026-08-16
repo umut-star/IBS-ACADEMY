@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan de Crecimiento · Ejemplo — Misión Orbital</title>
+<style>
+  :root{
+    --bg0:#05060f; --bg1:#0a0e27; --bg2:#0d1535;
+    --ink2:#121C46; --gold:#9C7B22; --gold2:#f5c451;
+    --cyan:#4dd0e1; --purple:#8a6cff;
+    --line:rgba(245,196,81,.26); --txt:#eaf0ff; --mut:#9aa6c6;
+    --logrado:#3fe08a; --sig:#f5c451; --bloq:#7c88ad;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:Arial,Helvetica,sans-serif;color:var(--txt);position:relative;
+    background:linear-gradient(180deg,#07090e 0%,#0a0d14 55%,#07090e 100%);
+    min-height:100vh;padding:0 20px 90px;overflow-x:hidden;}
+
+  .stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
+  .stars span{position:absolute;inset:0;display:block;}
+  .stars .s1{background-image:
+      radial-gradient(1.4px 1.4px at 12% 18%, #fff, transparent),
+      radial-gradient(1.2px 1.2px at 34% 62%, #fff, transparent),
+      radial-gradient(1.6px 1.6px at 58% 28%, #fff, transparent),
+      radial-gradient(1.1px 1.1px at 76% 74%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 91% 40%, #fff, transparent),
+      radial-gradient(1.2px 1.2px at 22% 88%, #fff, transparent),
+      radial-gradient(1.3px 1.3px at 47% 8%, #fff, transparent);
+    background-repeat:repeat;background-size:520px 520px;opacity:.85;animation:tw 4s ease-in-out infinite;}
+  .stars .s2{background-image:
+      radial-gradient(1px 1px at 8% 44%, #cfe0ff, transparent),
+      radial-gradient(1px 1px at 66% 12%, #cfe0ff, transparent),
+      radial-gradient(1.2px 1.2px at 83% 82%, #cfe0ff, transparent),
+      radial-gradient(1px 1px at 40% 40%, #cfe0ff, transparent),
+      radial-gradient(1px 1px at 28% 70%, #cfe0ff, transparent);
+    background-repeat:repeat;background-size:340px 340px;opacity:.6;animation:tw 6s ease-in-out infinite reverse;}
+  .stars .s3{background-image:
+      radial-gradient(2px 2px at 72% 30%, #f5c451, transparent),
+      radial-gradient(1.8px 1.8px at 18% 60%, #4dd0e1, transparent),
+      radial-gradient(1.8px 1.8px at 90% 66%, #8a6cff, transparent);
+    background-repeat:repeat;background-size:680px 680px;opacity:.75;animation:tw 5s ease-in-out infinite;}
+  @keyframes tw{0%,100%{opacity:.5}50%{opacity:1}}
+  .sun{position:fixed;top:-140px;right:-120px;width:420px;height:420px;border-radius:50%;z-index:0;pointer-events:none;
+    background:radial-gradient(circle at 50% 50%, rgba(245,196,81,.16), rgba(245,196,81,.04) 42%, transparent 66%);
+    filter:blur(4px);}
+  .wrap{max-width:1000px;margin:0 auto;position:relative;z-index:1;}
+
+  header{position:relative;padding:52px 6px 24px;overflow:hidden;}
+  .heromotif{position:absolute;right:-6px;top:30px;width:300px;height:250px;opacity:.9;pointer-events:none;}
+  .brand{display:flex;align-items:center;gap:13px;letter-spacing:5px;font-size:15px;font-weight:700;color:var(--gold2);text-transform:uppercase;position:relative;}
+  .brand .dot{width:11px;height:11px;background:var(--gold2);border-radius:50%;box-shadow:0 0 0 5px rgba(245,196,81,.16),0 0 18px rgba(245,196,81,.8);}
+  .kicker{margin-top:30px;font-size:14px;letter-spacing:6px;text-transform:uppercase;color:var(--cyan);font-weight:700;position:relative;}
+  .goldline{width:78px;height:4px;background:linear-gradient(90deg,var(--gold2),var(--cyan));margin:14px 0 18px;border-radius:3px;box-shadow:0 0 16px rgba(245,196,81,.5);}
+  h1{font-size:52px;line-height:1.02;font-weight:800;letter-spacing:-1px;position:relative;}
+  h1 span{color:var(--gold2);text-shadow:0 0 26px rgba(245,196,81,.45);}
+  .sub{margin-top:14px;font-size:18px;color:#cfd6ea;font-weight:600;}
+  .idrow{margin-top:24px;display:flex;gap:44px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.14);padding-top:20px;position:relative;}
+  .idrow .lab{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--mut);}
+  .idrow .val{font-size:23px;font-weight:800;margin-top:5px;}
+  .idrow .val.gold{color:var(--gold2);}
+
+  .ejemplo{margin:26px 4px 6px;border:1px solid var(--line);border-left:4px solid var(--gold2);border-radius:14px;
+    background:linear-gradient(180deg,rgba(245,196,81,.10),rgba(10,13,20,.5));padding:18px 20px;}
+  .ejemplo .et{font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:800;color:var(--gold2);margin-bottom:7px;}
+  .ejemplo p{font-size:14.5px;line-height:1.6;color:#dfe6f7;}
+  .ejemplo b{color:#fff;}
+
+  h2.sec{font-size:14px;letter-spacing:4px;text-transform:uppercase;color:var(--gold2);font-weight:700;margin:40px 4px 4px;}
+  .seclead{color:var(--mut);font-size:14px;margin:0 4px 18px;line-height:1.5;}
+
+  .rutabox{position:relative;background:rgba(10,13,20,.6);
+    border:1px solid var(--line);border-radius:18px;padding:26px 20px 18px;overflow:hidden;}
+  .rutabox::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:
+      radial-gradient(1.3px 1.3px at 20% 30%,#fff,transparent),
+      radial-gradient(1px 1px at 70% 60%,#cfe0ff,transparent),
+      radial-gradient(1.4px 1.4px at 45% 80%,#f5c451,transparent),
+      radial-gradient(1px 1px at 88% 22%,#4dd0e1,transparent);
+    background-size:220px 220px;opacity:.5;}
+  .stair{display:flex;align-items:flex-end;gap:14px;min-width:940px;padding-top:70px;position:relative;z-index:1;}
+  .rung{flex:1;min-width:150px;position:relative;border-radius:16px;padding:16px 14px 16px;
+    background:linear-gradient(180deg,rgba(20,29,73,.86),rgba(10,14,39,.9));border:1px solid rgba(255,255,255,.10);}
+  .rung .planet{position:absolute;top:-30px;left:50%;transform:translateX(-50%);width:44px;height:44px;border-radius:50%;
+    box-shadow:inset -6px -6px 12px rgba(0,0,0,.5),0 0 18px rgba(245,196,81,.25);}
+  .rung .planet::after{content:"";position:absolute;left:-14px;right:-14px;top:50%;height:12px;transform:translateY(-50%) rotate(-18deg);
+    border:1.5px solid rgba(245,196,81,.35);border-radius:50%;}
+  .rung .est{position:absolute;top:-13px;left:50%;transform:translateX(-50%);white-space:nowrap;
+    font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:800;color:#0d1535;
+    padding:4px 12px;border-radius:999px;z-index:3;}
+  .rung .nl{font-size:15px;font-weight:800;margin-top:22px;}
+  .rung .nsub{font-size:11px;color:var(--gold2);font-weight:700;margin-top:2px;font-style:italic;}
+  .rung .kpi{margin-top:10px;font-size:13px;font-weight:800;line-height:1.5;color:#fff;}
+  .rung .kpi small{display:block;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--mut);}
+  .rung .unl{margin-top:10px;font-size:11px;color:#cfd6ea;line-height:1.4;border-top:1px solid rgba(255,255,255,.1);padding-top:8px;}
+  .rung .unl b{color:var(--gold2);}
+  .rung.logrado{border-color:var(--logrado);box-shadow:0 0 0 1px rgba(63,224,138,.4),0 0 26px rgba(63,224,138,.18);}
+  .rung.logrado .est{background:var(--logrado);color:#04210f;}
+  .rung.logrado .planet{background:radial-gradient(circle at 35% 30%,#7bffb0,#1c7d4c);}
+  .rung.sig{border-color:var(--sig);box-shadow:0 12px 34px rgba(0,0,0,.45),0 0 0 1px rgba(245,196,81,.5),0 0 30px rgba(245,196,81,.3);}
+  .rung.sig .est{background:linear-gradient(145deg,var(--gold2),var(--gold));}
+  .rung.sig .planet{background:radial-gradient(circle at 35% 30%,#ffe6a0,#b8860b);}
+  .rung.bloq{opacity:.94;}
+  .rung.bloq .est{background:var(--bloq);color:#0d1535;}
+  .rung.bloq .planet{background:radial-gradient(circle at 35% 30%,#9aa6c6,#3a4468);}
+  .stair .rung:nth-child(1){margin-bottom:0;}
+  .stair .rung:nth-child(2){margin-bottom:36px;}
+  .stair .rung:nth-child(3){margin-bottom:72px;}
+  .stair .rung:nth-child(4){margin-bottom:104px;}
+  .stair .rung:nth-child(5){margin-bottom:140px;}
+  .stair .rung:nth-child(6){margin-bottom:172px;}
+  .youare{position:absolute;top:-58px;left:0;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+    font-weight:800;color:var(--logrado);z-index:3;}
+  .youare::after{content:"";display:block;width:2px;height:22px;background:var(--logrado);margin-top:4px;margin-left:10px;
+    box-shadow:0 0 8px rgba(63,224,138,.7);}
+  .legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:22px;padding-left:4px;position:relative;z-index:1;}
+  .legend span{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mut);}
+  .legend i{width:14px;height:14px;border-radius:50%;display:inline-block;}
+
+  .callout{margin-top:22px;background:rgba(138,108,255,.10);border:1px solid var(--line);border-left:4px solid var(--gold2);
+    border-radius:0 14px 14px 0;padding:16px 20px;font-size:14px;color:#dfe4f2;line-height:1.6;}
+  .callout b{color:var(--gold2);}
+
+  .calc{background:linear-gradient(180deg,rgba(20,29,73,.86),rgba(10,14,39,.9));border:1px solid var(--line);border-radius:16px;padding:22px;}
+  .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .cgrid label{display:flex;flex-direction:column;gap:7px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mut);font-weight:700;}
+  .cgrid input,.cgrid select{background:rgba(10,17,48,.6);border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:10px;padding:12px 14px;font-size:16px;font-weight:800;-webkit-appearance:none;appearance:none;}
+  .cgrid input:focus,.cgrid select:focus{outline:none;border-color:var(--gold2);}
+  .cout{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px;}
+  .cbox2{background:rgba(10,17,48,.55);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 16px;text-align:center;}
+  .cbox2.hl{border-color:rgba(63,224,138,.4);background:rgba(63,224,138,.08);}
+  .cbox2 .cn{font-size:26px;font-weight:800;color:#fff;line-height:1.1;}
+  .cbox2.hl .cn{color:var(--logrado);}
+  .cbox2 .cu{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--mut);margin-top:6px;font-weight:700;}
+  .cnote{margin-top:16px;font-size:12px;color:var(--mut);line-height:1.55;}
+  @media(max-width:640px){.cgrid{grid-template-columns:1fr;}.cout{grid-template-columns:1fr 1fr;}}
+
+  #levels{position:relative;padding-left:30px;margin-top:12px;}
+  #levels::before{content:"";position:absolute;left:12px;top:14px;bottom:24px;width:4px;background:rgba(255,255,255,.10);border-radius:3px;}
+  #levels .rail{position:absolute;left:12px;top:14px;width:4px;height:0;border-radius:3px;
+    background:linear-gradient(180deg,var(--gold2),var(--cyan));box-shadow:0 0 14px rgba(245,196,81,.55);transition:height 1s ease;}
+  .level{position:relative;margin:14px 0;border:1px solid var(--line);border-radius:16px;
+    background:linear-gradient(180deg,rgba(20,29,73,.86),rgba(10,14,39,.9));overflow:hidden;
+    opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s,border-color .3s,box-shadow .3s;}
+  .level.show{opacity:1;transform:none;}
+  .level.open{border-color:var(--gold2);box-shadow:0 14px 44px rgba(0,0,0,.5),0 0 26px rgba(245,196,81,.14);}
+  .level::before{content:"";position:absolute;left:-30px;top:26px;width:16px;height:16px;border-radius:50%;
+    background:var(--bg1);border:3px solid rgba(255,255,255,.18);}
+  .level.show::before{border-color:var(--gold2);box-shadow:0 0 0 5px rgba(245,196,81,.18),0 0 14px rgba(245,196,81,.5);}
+  .lhead{display:flex;align-items:center;gap:16px;padding:16px 20px;cursor:pointer;user-select:none;}
+  .badge{flex:none;width:52px;height:52px;border-radius:13px;display:grid;place-items:center;position:relative;
+    background:linear-gradient(145deg,rgba(245,196,81,.20),rgba(138,108,255,.14));border:1px solid var(--line);}
+  .badge svg{width:28px;height:28px;stroke:var(--gold2);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+  .ltitle{flex:1;}
+  .ltitle .nvl{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);font-weight:700;}
+  .ltitle .t{font-size:18px;font-weight:800;margin-top:2px;}
+  .ltitle .unlock{font-size:13px;color:var(--gold2);margin-top:3px;font-weight:700;}
+  .esttag{flex:none;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:800;color:#0d1535;padding:5px 11px;border-radius:999px;}
+  .esttag.logrado{background:var(--logrado);color:#04210f;}
+  .esttag.sig{background:linear-gradient(145deg,var(--gold2),var(--gold));}
+  .esttag.bloq{background:var(--bloq);}
+  .chev{flex:none;color:var(--gold2);font-size:20px;transition:transform .3s;}
+  .level.open .chev{transform:rotate(180deg);}
+  .lbody{max-height:0;overflow:hidden;transition:max-height .5s ease;}
+  .lbody .inner{padding:2px 20px 22px;}
+  .metabar{display:flex;gap:9px;flex-wrap:wrap;margin:4px 0 14px;}
+  .earn{margin:2px 0 14px;display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;
+    background:rgba(63,224,138,.10);border:1px solid rgba(63,224,138,.3);border-left:4px solid var(--logrado);
+    border-radius:0 10px 10px 0;padding:11px 15px;}
+  .earn .en{font-size:22px;font-weight:800;color:var(--logrado);}
+  .earn .el{font-size:12px;color:var(--mut);font-weight:600;letter-spacing:.3px;}
+  .chip{background:rgba(245,196,81,.12);border:1px solid var(--line);border-radius:999px;padding:6px 13px;font-size:13px;font-weight:700;color:var(--gold2);}
+  .field{margin-top:11px;}
+  .field .fl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mut);margin-bottom:6px;}
+  .field ul{list-style:none;}
+  .field li{position:relative;padding-left:19px;margin-bottom:6px;font-size:14.5px;line-height:1.5;color:#dfe4f2;}
+  .field li::before{content:"";position:absolute;left:2px;top:7px;width:8px;height:8px;border-radius:50%;background:var(--gold2);box-shadow:0 0 8px rgba(245,196,81,.6);}
+  .field li b{color:var(--gold2);}
+  .field .imp{display:block;margin-top:9px;background:rgba(138,108,255,.12);border:1px solid var(--line);border-left:4px solid var(--gold2);border-radius:0 10px 10px 0;padding:10px 14px;font-size:14px;line-height:1.5;color:#f2e8cd;font-weight:600;}
+  .field .imp b{color:var(--gold2);}
+  .field .imp .tag{display:inline-block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:800;color:#0d1535;background:linear-gradient(145deg,var(--gold2),var(--gold));padding:2px 9px;border-radius:999px;margin-right:8px;}
+  .ptab{width:100%;border-collapse:collapse;margin-top:4px;font-size:13.5px;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .ptab th{background:rgba(245,196,81,.14);color:var(--gold2);font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:11px;padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);}
+  .ptab td{padding:9px 12px;color:#dfe4f2;border-bottom:1px solid rgba(255,255,255,.06);}
+  .ptab td:first-child{color:var(--gold2);font-weight:700;}
+  .ptab tr:last-child td{border-bottom:none;}
+
+  .base{margin:8px 0 6px;background:radial-gradient(500px 200px at 80% 0%, rgba(77,208,225,.12), transparent 60%),rgba(255,255,255,.04);border:1px solid var(--line);border-radius:16px;padding:20px 22px;}
+  .base h3{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);font-weight:700;margin-bottom:14px;}
+  .kpis{display:flex;gap:14px;flex-wrap:wrap;}
+  .kpi3{flex:1;min-width:150px;background:rgba(10,17,48,.55);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:13px 15px;}
+  .kpi3 .n{font-size:28px;font-weight:800;color:#fff;}
+  .kpi3 .u{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mut);margin-top:4px;}
+
+  .canal{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .cbox{background:linear-gradient(180deg,rgba(20,29,73,.82),rgba(10,14,39,.88));border:1px solid var(--line);border-radius:14px;padding:18px 20px;}
+  .cbox h4{font-size:15px;font-weight:800;color:var(--gold2);margin-bottom:10px;display:flex;align-items:center;gap:9px;}
+  .cbox ul{list-style:none;}
+  .cbox li{position:relative;padding-left:18px;margin-bottom:10px;font-size:14px;line-height:1.55;color:#dfe4f2;}
+  .cbox li b{color:var(--gold2);}
+  .cbox li::before{content:"";position:absolute;left:2px;top:7px;width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 7px rgba(77,208,225,.6);}
+  @media(max-width:640px){.canal{grid-template-columns:1fr;}}
+
+  .aviso{margin-top:30px;border-left:3px solid var(--gold2);background:rgba(255,255,255,.03);border-radius:0 12px 12px 0;padding:16px 20px;font-size:13.5px;color:var(--mut);line-height:1.6;}
+  .aviso b{color:var(--gold2);}
+  footer{text-align:center;margin-top:36px;font-size:12px;letter-spacing:2px;color:#6f7ba0;}
+
+  .climber{position:absolute;left:0;top:0;width:38px;height:56px;z-index:7;pointer-events:none;
+    transition:transform 1.15s cubic-bezier(.45,.05,.35,1);will-change:transform;
+    filter:drop-shadow(0 8px 12px rgba(0,0,0,.5));}
+  .climber svg{width:38px;height:56px;overflow:visible;}
+  .climber .flame{transform-box:fill-box;transform-origin:top center;opacity:.95;}
+  .climber.walk .flame{animation:flick .12s ease-in-out infinite;}
+  @keyframes flick{0%,100%{transform:scaleY(1) scaleX(1)}50%{transform:scaleY(1.5) scaleX(.7)}}
+  .climber.walk .rk{animation:shake .12s ease-in-out infinite;}
+  @keyframes shake{0%,100%{transform:translateX(0)}50%{transform:translateX(.8px)}}
+
+  .rung .lockb{display:none;}
+  .rung.bloq{filter:grayscale(.10);}
+  .rung.bloq .lockb{display:block;position:absolute;top:10px;right:10px;width:21px;height:21px;opacity:.9;z-index:3;}
+  .rung.bloq .lockb svg{width:21px;height:21px;stroke:var(--bloq);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
+  .rung.bloq .kpi{color:#c7cee1;}
+  .rung.bloq .nl{color:#d3d9ec;}
+  .lockchip{position:absolute;right:-7px;bottom:-7px;width:21px;height:21px;background:var(--ink2);
+    border:1px solid var(--bloq);border-radius:50%;display:grid;place-items:center;box-shadow:0 3px 8px rgba(0,0,0,.35);}
+  .lockchip svg{width:11px;height:11px;stroke:var(--bloq);fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;}
+  .level.locked .badge svg{stroke:var(--bloq);}
+</style>
+</head>
+<body>
+<div class="stars"><span class="s1"></span><span class="s2"></span><span class="s3"></span></div>
+<div class="sun"></div>
+<div class="wrap">
+
+  <header>
+    <svg class="heromotif" viewBox="0 0 300 250">
+      <defs>
+        <linearGradient id="rg" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#9C7B22"/><stop offset="1" stop-color="#f5c451"/></linearGradient>
+        <radialGradient id="pl" cx="35%" cy="30%"><stop offset="0" stop-color="#8a6cff"/><stop offset="1" stop-color="#3a2c7a"/></radialGradient>
+      </defs>
+      <circle cx="238" cy="70" r="40" fill="url(#pl)"/>
+      <ellipse cx="238" cy="70" rx="58" ry="16" fill="none" stroke="#f5c451" stroke-width="3" opacity=".55" transform="rotate(-20 238 70)"/>
+      <g transform="rotate(38 150 150)">
+        <path d="M150 40 C176 66 176 132 150 176 C124 132 124 66 150 40 Z" fill="url(#rg)"/>
+        <circle cx="150" cy="92" r="13" fill="#0a0e27" stroke="#f5c451" stroke-width="3"/>
+        <path d="M124 150 L108 182 L136 168 Z" fill="#9C7B22"/>
+        <path d="M176 150 L192 182 L164 168 Z" fill="#9C7B22"/>
+        <path d="M138 176 Q150 210 162 176 Z" fill="#4dd0e1" opacity=".9"/>
+      </g>
+    </svg>
+    <div class="brand"><span class="dot"></span> Weltrade</div>
+    <div class="kicker">Plan de Crecimiento · Misión Orbital</div>
+    <div class="goldline"></div>
+    <h1>De Trader <span>a Empresario</span></h1>
+    <div class="sub">Ruta por niveles anclada a tus KPIs</div>
+    <div class="idrow">
+      <div><div class="lab">Programa</div><div class="val gold">De Trader a Empresario</div></div>
+      <div><div class="lab">Estructura</div><div class="val gold">5 niveles · por KPIs</div></div>
+      <div><div class="lab">Se personaliza con</div><div class="val">Tus propios números</div></div>
+    </div>
+  </header>
+
+  <div class="ejemplo">
+    <div class="et">Ejemplo demostrativo</div>
+    <p>Los números de esta página son un <b>ejemplo con cifras redondas</b> para mostrar cómo funciona el plan. <b>Tu plan real se construye a medida con tus propios KPIs</b> —tu mejor mes, tu comisión actual y tu mayor palanca (captación, activación o retención)—. Pídeselo a tu manager.</p>
+  </div>
+
+  <!-- RUTA VISUAL -->
+  <h2 class="sec">La ruta de un vistazo</h2>
+  <div class="seclead">Cada planeta se desbloquea con 3 métricas: FTD · Depósito neto · Spread. Tu ruta real se ancla en tu palanca —<b style="color:var(--gold2)">captar más</b>, que los clientes <b style="color:var(--gold2)">operen más</b> (spread) o que <b style="color:var(--gold2)">se queden</b> (retención)— según lo que muestren tus KPIs.</div>
+  <div class="rutabox">
+    <div class="stair">
+      <div class="rung logrado">
+        <div class="planet"></div>
+        <div class="youare">Estás acá</div>
+        <div class="est">En curso</div>
+        <div class="nl">Punto de partida</div><div class="nsub">tu mejor mes real</div>
+        <div class="kpi">50<small>FTD</small>10.000 USD<small>Depósito neto</small>3.000<small>Spread com. / mes</small></div>
+        <div class="unl">Es el piso: desde aquí se construye toda la ruta.</div>
+      </div>
+      <div class="rung sig">
+        <div class="planet"></div>
+        <div class="est">Siguiente órbita</div>
+        <div class="nl">Nivel 1</div><div class="nsub">primer salto de volumen</div>
+        <div class="kpi">65<small>FTD</small>13.000 USD<small>Depósito neto</small>7.000<small>Spread com. / mes</small></div>
+        <div class="unl">Desbloquea: <b>Master IB</b> · bono 100% · permanente</div>
+      </div>
+      <div class="rung bloq">
+        <div class="planet"></div>
+        <div class="lockb"><svg viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="9.5" rx="2.2"/><path d="M8 10.5 V7.5 a4 4 0 0 1 8 0 v3"/></svg></div>
+        <div class="est">Bloqueado</div>
+        <div class="nl">Nivel 2</div><div class="nsub">+volumen</div>
+        <div class="kpi">85<small>FTD</small>17.000 USD<small>Depósito neto</small>22.500<small>Spread com. / mes</small></div>
+        <div class="unl">Tu spread mensual pasa <b>20.000</b> → desbloquea <b>Strategist 32%</b> + <b>torneo</b>.</div>
+      </div>
+      <div class="rung bloq">
+        <div class="planet"></div>
+        <div class="lockb"><svg viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="9.5" rx="2.2"/><path d="M8 10.5 V7.5 a4 4 0 0 1 8 0 v3"/></svg></div>
+        <div class="est">Bloqueado</div>
+        <div class="nl">Nivel 3</div><div class="nsub">3 niveles en crecimiento</div>
+        <div class="kpi">105<small>FTD</small>21.000 USD<small>Depósito neto</small>30.000<small>Spread com. / mes</small></div>
+        <div class="unl">Desbloquea: <b>apoyo de marketing · hasta 6.000 USD</b> · crecer 3 niveles</div>
+      </div>
+      <div class="rung bloq">
+        <div class="planet"></div>
+        <div class="lockb"><svg viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="9.5" rx="2.2"/><path d="M8 10.5 V7.5 a4 4 0 0 1 8 0 v3"/></svg></div>
+        <div class="est">Bloqueado</div>
+        <div class="nl">Nivel 4</div><div class="nsub">spread 2x N2</div>
+        <div class="kpi">130<small>FTD</small>26.000 USD<small>Depósito neto</small>45.000<small>Spread com. / mes</small></div>
+        <div class="unl">Spread mensual <b>45.000</b> → desbloquea <b>Ambassador 35%</b> + <b>evento personal · hasta 1.000 USD</b></div>
+      </div>
+      <div class="rung bloq">
+        <div class="planet"></div>
+        <div class="lockb"><svg viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="9.5" rx="2.2"/><path d="M8 10.5 V7.5 a4 4 0 0 1 8 0 v3"/></svg></div>
+        <div class="est">Bloqueado</div>
+        <div class="nl">Nivel 5</div><div class="nsub">spread 2x N4</div>
+        <div class="kpi">200<small>FTD</small>40.000 USD<small>Depósito neto</small>90.000<small>Spread com. / mes</small></div>
+        <div class="unl">Desbloquea: <b>comisión Master IB de 3% a 5%</b></div>
+      </div>
+    </div>
+    <div class="legend">
+      <span><i style="background:#3fe08a"></i> En curso</span>
+      <span><i style="background:#f5c451"></i> Siguiente órbita</span>
+      <span><i style="background:#7c88ad"></i> Bloqueado / futuro</span>
+    </div>
+  </div>
+
+  <!-- DETALLE -->
+  <h2 class="sec">El detalle, órbita por órbita</h2>
+  <div class="seclead">Toca cada nivel para ver la meta exacta, cómo lograrlo y qué desbloquea.</div>
+
+  <div class="base">
+    <h3>Plataforma de lanzamiento — tu mejor mes (ejemplo)</h3>
+    <div class="kpis">
+      <div class="kpi3"><div class="n" data-count="50">0</div><div class="u">FTD</div></div>
+      <div class="kpi3"><div class="n" data-count="10000" data-suffix=" USD">0</div><div class="u">Depósito neto</div></div>
+      <div class="kpi3"><div class="n" data-count="3000">0</div><div class="u">Spread comisionable</div></div>
+    </div>
+  </div>
+
+  <div id="levels">
+    <div class="rail" id="rail"></div>
+
+    <!-- Nivel 1 -->
+    <div class="level">
+      <div class="lhead">
+        <div class="badge"><svg viewBox="0 0 24 24"><path d="M4 17 L6 8 L10 13 L12 6 L14 13 L18 8 L20 17 Z"/><line x1="4" y1="20" x2="20" y2="20"/></svg></div>
+        <div class="ltitle"><div class="nvl">Nivel 1</div><div class="t">Desbloquear Master IB</div>
+          <div class="unlock">▸ Master IB · bono 100% · permanente</div></div>
+        <div class="esttag sig">Siguiente</div><div class="chev">⌄</div>
+      </div>
+      <div class="lbody"><div class="inner">
+        <div class="metabar"><span class="chip">65 FTD</span><span class="chip">13.000 USD</span><span class="chip">7.000 Spread / mes</span></div>
+        <div class="field"><div class="fl">Meta (KPI)</div>
+          <ul><li>Dar el primer salto de volumen: <b>más que duplicar el spread mensual</b> (3.000 → 7.000), con más FTD y más operativa por cliente. Master IB es <b>permanente</b> una vez logrado.</li></ul></div>
+        <div class="field"><div class="fl">Cómo lograrlo (tus 3 palancas)</div>
+          <ul>
+            <li><b>Captación:</b> mantén un flujo constante de registros y FTD (contenido, campañas, referidos).</li>
+            <li><b>Activación:</b> lleva a cada cliente que depositó a su primera operación —CopyTrading para quien no opera solo aún.</li>
+            <li><b>Retención:</b> plan por cliente (cuánto ganar/perder, cuánto retirar) para que sostenga su capital en lugar de sacarlo.</li>
+          </ul></div>
+        <div class="field"><div class="fl">Desbloquea</div>
+          <ul><li>Estatus Master IB (permanente): bono +100%.</li></ul></div>
+        <div class="field"><div class="fl">Estimada Ganancia</div>
+          <div class="earn"><span class="en">≈ $2.170 / mes</span><span class="el">spread 7.000 × Leader 31% · estimación, no garantía</span></div></div>
+      </div></div>
+    </div>
+
+    <!-- Nivel 2 -->
+    <div class="level">
+      <div class="lhead">
+        <div class="badge"><svg viewBox="0 0 24 24"><path d="M3 10 L3 14 L9 14 L16 18 L16 6 L9 10 Z"/><path d="M16 9 A3 3 0 0 1 16 15"/><line x1="6" y1="14" x2="7" y2="20"/></svg></div>
+        <div class="ltitle"><div class="nvl">Nivel 2</div><div class="t">Strategist 32%</div>
+          <div class="unlock">▸ Strategist 32% + torneo con premios (una sola vez)</div></div>
+        <div class="esttag bloq">Bloqueado</div><div class="chev">⌄</div>
+      </div>
+      <div class="lbody"><div class="inner">
+        <div class="fl">Meta</div>
+        <div class="metabar"><span class="chip">85 FTD</span><span class="chip">17.000 USD</span><span class="chip">22.500 Spread / mes</span></div>
+        <div class="field"><div class="fl">Por qué estas metas</div>
+          <ul>
+            <li><b>El spread es la palanca principal.</b> Es de donde sale tu comisión. Subirlo por encima de <b>20.000</b> al mes te lleva a Strategist 32%: más operativa por cada dólar que ya está en las cuentas.</li>
+            <li><b>El FTD crece de forma sostenida.</b> Un flujo constante de clientes nuevos alimenta el volumen; no hace falta un pico, sí constancia.</li>
+            <li><b>El depósito neto sube al tapar retiros.</b> Cada punto menos de retiros es net deposit que ya tienes, sin captar de nuevo.</li>
+          </ul></div>
+        <div class="field"><div class="fl">Cómo lograrlo</div>
+          <ul>
+            <li>Escalar el CopyTrading: más clientes replicando, más volumen operado.</li>
+            <li>Grupos VIP con análisis educativo para que operen con criterio (y con más frecuencia).</li>
+            <li>Campaña de retención: paquetes de servicio que premian mantener el capital, no retirarlo.</li>
+          </ul></div>
+        <div class="field"><div class="fl">Estimada Ganancia</div>
+          <div class="earn"><span class="en">≈ $7.200 / mes</span><span class="el">spread 22.500 × Strategist 32% · estimación, no garantía</span></div></div>
+      </div></div>
+    </div>
+
+    <!-- Nivel 3 -->
+    <div class="level">
+      <div class="lhead">
+        <div class="badge"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7 v4 c0 1.7 3.1 3 7 3 s7 -1.3 7 -3 v-4"/><path d="M5 11 v4 c0 1.7 3.1 3 7 3 s7 -1.3 7 -3 v-4"/><path d="M12 20 v-4 M10 18 l2 2 2 -2"/></svg></div>
+        <div class="ltitle"><div class="nvl">Nivel 3</div><div class="t">Apoyo de marketing</div>
+          <div class="unlock">▸ Apoyo hasta 6.000 USD (2.000 / nivel) · crecer 3 niveles</div></div>
+        <div class="esttag bloq">Bloqueado</div><div class="chev">⌄</div>
+      </div>
+      <div class="lbody"><div class="inner">
+        <div class="field"><div class="fl">Cómo funciona el apoyo</div>
+          <ul><li>Es un <b>pago por resultados</b>, no un anticipo: se libera <b>2.000 USD por nivel</b> —<b>6.000 USD en total</b>— al crecer los 3 niveles de spread.</li></ul></div>
+        <div class="field"><div class="fl">La meta: crecer 3 niveles</div>
+          <table class="ptab">
+            <tr><th>Nivel</th><th>FTD</th><th>Depósito neto</th><th>Spread com. / mes</th></tr>
+            <tr><td>Nivel 1</td><td>85</td><td>17.000 USD</td><td>22.500</td></tr>
+            <tr><td>Nivel 2</td><td>95</td><td>19.000 USD</td><td>26.087</td></tr>
+            <tr><td>Nivel 3</td><td>105</td><td>21.000 USD</td><td>30.000</td></tr>
+            <tr style="background:rgba(245,196,81,.12);"><td>TOTAL</td><td>285</td><td>57.000 USD</td><td>78.587</td></tr>
+          </table>
+          <div class="imp"><span class="tag">Atajo</span>Si logras el <b>total</b> (285 FTD · 57.000 de depósito neto · 78.587 de spread) en <b>un solo nivel</b>, se libera el pago completo de <b>6.000 USD</b> de inmediato —no hace falta esperar 3 niveles.</div></div>
+        <div class="field"><div class="fl">En qué se puede usar</div>
+          <ul><li>Publicidad, producción de contenido, eventos locales o material para la comunidad. Se acuerda con el manager antes de ejecutar.</li></ul></div>
+        <div class="field"><div class="fl">Estimada Ganancia</div>
+          <div class="earn"><span class="en">≈ $9.600 / mes</span><span class="el">spread 30.000 × Strategist 32% · estimación, no garantía</span></div></div>
+      </div></div>
+    </div>
+
+    <!-- Nivel 4 -->
+    <div class="level">
+      <div class="lhead">
+        <div class="badge"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="8" y1="3" x2="8" y2="6"/><line x1="16" y1="3" x2="16" y2="6"/><path d="M12 12 l1 2 2 .3 -1.5 1.5 .4 2 -1.9 -1 -1.9 1 .4 -2 -1.5 -1.5 2 -.3 z"/></svg></div>
+        <div class="ltitle"><div class="nvl">Nivel 4</div><div class="t">Ambassador 35% + Evento personal</div>
+          <div class="unlock">▸ Ambassador 35% (spread mensual 45.000) + evento propio</div></div>
+        <div class="esttag bloq">Bloqueado</div><div class="chev">⌄</div>
+      </div>
+      <div class="lbody"><div class="inner">
+        <div class="metabar"><span class="chip">130 FTD</span><span class="chip">26.000 USD</span><span class="chip">45.000 Spread / mes</span></div>
+        <div class="field"><div class="fl">Desbloquea (concreto)</div>
+          <ul><li>Al llegar a <b>45.000 de spread mensual</b>, la comisión de clientes directos sube a <b>Ambassador 35%</b> —el mayor salto del plan (de Strategist 32%).</li></ul></div>
+        <div class="field"><div class="fl">Meta (KPI)</div>
+          <ul><li>130 FTD · 26.000 USD de depósito neto · 45.000 de spread comisionable / mes (el doble del spread del Nivel 2).</li></ul></div>
+        <div class="field"><div class="fl">El evento</div>
+          <ul><li>Aporte máximo de <b>1.000 USD</b> con al menos <b>50 asistentes</b>. Se evalúa según resultados y se decide con el manager.</li></ul></div>
+        <div class="field"><div class="fl">Estimada Ganancia</div>
+          <div class="earn"><span class="en">≈ $15.750 / mes</span><span class="el">spread 45.000 × Ambassador 35% · estimación, no garantía</span></div></div>
+      </div></div>
+    </div>
+
+    <!-- Nivel 5 -->
+    <div class="level">
+      <div class="lhead">
+        <div class="badge"><svg viewBox="0 0 24 24"><path d="M5 21 V10 l4 -2 v13 M9 8 l6 -3 v16 M15 5 l4 2 v14 M4 21 h16"/><path d="M8 4 l1.2 1.8 2 .3 -1.5 1.4 .4 2 -1.9 -1 -1.9 1 .4 -2 -1.5 -1.4 2 -.3 z"/></svg></div>
+        <div class="ltitle"><div class="nvl">Nivel 5</div><div class="t">Aumento de comisión Master IB</div>
+          <div class="unlock">▸ Comisión Master IB: de 3% a 5%</div></div>
+        <div class="esttag bloq">Bloqueado</div><div class="chev">⌄</div>
+      </div>
+      <div class="lbody"><div class="inner">
+        <div class="metabar"><span class="chip">200 FTD</span><span class="chip">40.000 USD</span><span class="chip">90.000 Spread / mes</span></div>
+        <div class="field"><div class="fl">Meta (KPI)</div>
+          <ul><li>El doble del spread del Nivel 4 → 200 FTD · 40.000 USD · 90.000 de spread comisionable / mes.</li></ul></div>
+        <div class="field"><div class="fl">Desbloquea</div>
+          <ul><li>Aumento de la comisión Master IB <b>de 3% a 5%</b> (+2 puntos), sobre la actividad de tu red de sub-IBs. Distinta de la comisión de clientes directos del Nivel 4.</li></ul>
+          <div class="imp"><span class="tag">Clave</span>A esta escala ya no creces solo captando clientes: creces <b>construyendo sub-IBs</b>. Cada sub-IB fuerte multiplica tu red sin multiplicar tus horas.</div></div>
+        <div class="field"><div class="fl">Estimada Ganancia</div>
+          <div class="earn"><span class="en">≈ $31.500 / mes</span><span class="el">spread 90.000 × Ambassador 35% · estimación, no garantía</span></div></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- MENTALIDAD -->
+  <h2 class="sec">Piensa como empresario</h2>
+  <div class="seclead">Lo que separa a un IB que crece de uno que se estanca no es un buen mes: es la mentalidad con la que lo trabaja.</div>
+  <div class="base" style="border-color:rgba(77,208,225,.4)">
+    <div class="callout" style="border-left-color:var(--cyan);background:rgba(77,208,225,.08)">
+      <b>Piensa como empresario, no como trader.</b> Un buen mes no es para relajarse: el mes pasado ya es historia y <b>cada mes empiezas desde cero</b>. Lo que construye tu negocio no es un pico aislado, es <b>sostener el ritmo</b> mes tras mes.
+    </div>
+    <div class="callout" style="margin-top:12px;border-left-color:var(--cyan);background:rgba(77,208,225,.08)">
+      <b>Tu mayor oportunidad suele estar en casa.</b> Los registros que aún no depositaron y los clientes que depositaron y dejaron de operar valen más que empezar de cero: actívalos antes de gastar en captar a nadie nuevo.
+    </div>
+    <div class="callout" style="margin-top:12px;border-left-color:var(--logrado);background:rgba(63,224,138,.08)">
+      <b>Planifica el próximo mes por adelantado.</b> Para tus clientes que ya operan, prepara desde hoy su plan del mes que viene —metas, seguimiento y acompañamiento—. Empezar el mes con el plan listo es lo que sostiene el ritmo.
+    </div>
+    <div class="callout" style="margin-top:12px;border-left-color:var(--logrado);background:rgba(63,224,138,.08)">
+      <b>Y planifica de dónde vendrán los nuevos.</b> Que la captación sea constante y no cuestión de suerte: define tus fuentes (contenido, campañas, referidos) y una meta de registros y FTD para cada mes. Un pico no es un negocio; un flujo predecible, sí.
+    </div>
+    <div class="callout" style="margin-top:12px">
+      <b>La rutina del empresario:</b>
+      <ul style="list-style:none;margin:9px 0 0;padding:0">
+        <li style="margin-bottom:7px;padding-left:16px;position:relative"><span style="position:absolute;left:0;color:var(--gold2)">›</span> <b>Meta de cierre:</b> fija al inicio de cada mes tus objetivos de FTD, spread y activación.</li>
+        <li style="margin-bottom:7px;padding-left:16px;position:relative"><span style="position:absolute;left:0;color:var(--gold2)">›</span> <b>Revisión semanal:</b> mira FTD · spread · retiros cada semana y corrige —no esperes al cierre.</li>
+        <li style="margin-bottom:7px;padding-left:16px;position:relative"><span style="position:absolute;left:0;color:var(--gold2)">›</span> <b>Segmenta:</b> inactivo, activo y VIP —cada uno con su plan.</li>
+        <li style="margin-bottom:7px;padding-left:16px;position:relative"><span style="position:absolute;left:0;color:var(--gold2)">›</span> <b>Documenta lo que funcionó</b> y repítelo el mes siguiente.</li>
+        <li style="padding-left:16px;position:relative"><span style="position:absolute;left:0;color:var(--gold2)">›</span> <b>Construye tu equipo:</b> delega activación, soporte y retención.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CALCULADORA -->
+  <h2 class="sec">Calculadora · Meta diaria</h2>
+  <div class="seclead">Pon tus propios números y mira a dónde te llevan. Es una proyección con tus supuestos —no una garantía.</div>
+  <div class="calc">
+    <div class="cgrid">
+      <label>Meta diaria de FTD<input id="cMeta" type="number" min="0" step="1" value="2"></label>
+      <label>Días operativos al mes<select id="cDias"><option>20</option><option>22</option><option>24</option><option>26</option><option selected>30</option></select></label>
+      <label>Tu comisión (W-Club)<select id="cCom">
+        <option value="28">28% · Rookie</option><option value="29">29% · Sponsor</option><option value="30">30% · Mentor</option>
+        <option value="31" selected>31% · Leader</option><option value="32">32% · Strategist</option><option value="35">35% · Ambassador</option></select></label>
+      <label>Spread comisionable de tu comunidad / mes<input id="cSpread" type="number" min="0" step="100" value="6000"></label>
+    </div>
+    <div class="cout">
+      <div class="cbox2"><div class="cn" id="oFtdMes">–</div><div class="cu">FTD al mes</div></div>
+      <div class="cbox2"><div class="cn" id="oFtdAno">–</div><div class="cu">FTD al año</div></div>
+      <div class="cbox2"><div class="cn" id="oClientes">–</div><div class="cu">Clientes activos / año</div></div>
+      <div class="cbox2 hl"><div class="cn" id="oGanMes">–</div><div class="cu">Ganancia estimada / mes</div></div>
+      <div class="cbox2 hl"><div class="cn" id="oGanAno">–</div><div class="cu">Ganancia estimada / año</div></div>
+    </div>
+    <div class="cnote">Proyección con tus propios supuestos. La comisión real depende de tu nivel de W-Club (spread de los últimos 90 días) y de las condiciones vigentes de Weltrade. No es una garantía de ingresos.</div>
+  </div>
+
+  <!-- ESTRATEGIAS -->
+  <h2 class="sec">Estrategias e ideas para crecer</h2>
+  <div class="seclead">Tus tres palancas de crecimiento. Tu plan real prioriza la que más te conviene según tus KPIs.</div>
+  <div class="canal">
+    <div class="cbox"><h4>Captación (traer clientes)</h4>
+      <ul>
+        <li><b>Contenido constante.</b> Publica en redes con un ritmo fijo: presencia diaria construye confianza y registros.</li>
+        <li><b>Referidos de tus clientes.</b> Un cliente satisfecho es tu mejor canal; pide y facilita la recomendación.</li>
+        <li><b>Campañas puntuales.</b> Webinars, retos gratuitos y colaboraciones para atraer registros nuevos.</li>
+        <li><b>Fuentes definidas.</b> Que la captación sea un flujo predecible, no cuestión de suerte —con meta mensual de registros y FTD.</li>
+      </ul></div>
+    <div class="cbox"><h4>Activación (que operen)</h4>
+      <ul>
+        <li><b>CopyTrading como puerta de entrada.</b> Quien no se anima a operar solo, empieza copiando. Es la forma más rápida de convertir un depósito en volumen.</li>
+        <li><b>Transmisiones en vivo.</b> Opera en directo y enseña: el cliente que ve cómo se hace, opera.</li>
+        <li><b>Grupo VIP con análisis educativo.</b> Da criterio para operar con frecuencia (educación, no gestión de dinero de terceros).</li>
+        <li><b>Onboarding del primer trade.</b> Acompaña a cada nuevo depósito hasta su primera operación —ahí se activa de verdad.</li>
+        <li><b>Reactivación de inactivos.</b> Mensaje personal a quien depositó y dejó de operar, antes de perderlo.</li>
+      </ul></div>
+    <div class="cbox"><h4>Retención (que se queden)</h4>
+      <ul>
+        <li><b>Tapa la fuga de retiros.</b> Cada punto menos de retiros es net deposit directo. Empieza por entender por qué retiran.</li>
+        <li><b>Plan financiero por cliente VIP.</b> Proyecta ganancia/pérdida y cuánto retirar: el cliente que ve un plan, sostiene su capital.</li>
+        <li><b>Paquetes de servicio.</b> Muestra qué incluye cada uno; retienes y aumentas depósitos y comisiones.</li>
+        <li><b>Encuesta rápida (NPS).</b> Una pregunta al mes para detectar quién está por irse (o por retirar) y actuar a tiempo.</li>
+        <li><b>Construye tu equipo.</b> Delega soporte, activación y retención: dejas de ser un IB individual y te vuelves una empresa.</li>
+      </ul></div>
+  </div>
+
+  <!-- TERMINOS -->
+  <h2 class="sec">Términos que debes conocer</h2>
+  <div class="seclead">Definiciones clave para leer bien tus métricas.</div>
+  <div class="canal">
+    <div class="cbox"><h4>FTD — First Time Deposit</h4>
+      <ul>
+        <li>Es el <b>primer depósito</b> de un cliente nuevo: el momento en que un registro se convierte en <b>cliente real</b>. Traer FTD es el primer paso; tu ingreso llega cuando ese cliente <b>además opera</b> (genera spread).</li>
+      </ul></div>
+    <div class="cbox"><h4>Spread comisionable</h4>
+      <ul>
+        <li>Es el <b>volumen que operan tus clientes</b>, traducido a la parte que se comparte contigo. Es <b>de dónde sale tu comisión</b>: más operativa = más spread = más ingreso. Un cliente que deposita pero no opera casi no genera spread.</li>
+      </ul></div>
+    <div class="cbox"><h4>Net Deposit — Depósito neto</h4>
+      <ul>
+        <li>Es la <b>diferencia entre lo que los clientes depositan y lo que retiran</b>. Refleja el <b>capital que realmente queda</b> trabajando. Reducir retiros lo sube tanto como captar clientes nuevos.</li>
+      </ul></div>
+  </div>
+
+  <div class="aviso">
+    <b>Aviso.</b> Esto es un plan, no una garantía. El avance depende de KPIs sostenidos, no del tiempo transcurrido. Los resultados dependen del trabajo, la constancia y el enfoque del IB.
+  </div>
+
+  <footer>Documento confidencial · Programa para Introducing Brokers de Weltrade</footer>
+</div>
+
+<script>
+  var levels = Array.prototype.slice.call(document.querySelectorAll('.level'));
+  levels.forEach(function(lv){
+    var head=lv.querySelector('.lhead'), body=lv.querySelector('.lbody');
+    head.addEventListener('click',function(){
+      var open=lv.classList.contains('open');
+      levels.forEach(function(o){o.classList.remove('open');o.querySelector('.lbody').style.maxHeight=null;});
+      if(!open){lv.classList.add('open');body.style.maxHeight=body.scrollHeight+'px';}
+    });
+  });
+  window.addEventListener('resize',function(){var o=document.querySelector('.level.open .lbody');if(o)o.style.maxHeight=o.scrollHeight+'px';});
+  var rail=document.getElementById('rail'),shown=0;
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target);shown++;rail.style.height=Math.round(shown/levels.length*100)+'%';}});},{threshold:.3});
+  levels.forEach(function(l){io.observe(l);});
+  function anim(el){var t=+el.getAttribute('data-count'),s=el.getAttribute('data-suffix')||'',st=null,d=1100;
+    function step(ts){if(!st)st=ts;var p=Math.min((ts-st)/d,1),e=1-Math.pow(1-p,3);el.textContent=String(Math.round(t*e)).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+s;if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);}
+  var kio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){anim(e.target);kio.unobserve(e.target);}});},{threshold:.6});
+  document.querySelectorAll('.kpi3 .n[data-count]').forEach(function(el){kio.observe(el);});
+
+  levels.forEach(function(lv){
+    var tag=lv.querySelector('.esttag');
+    if(tag && tag.classList.contains('bloq')){
+      lv.classList.add('locked');
+      var b=lv.querySelector('.badge');
+      if(b){
+        var lk=document.createElement('div');lk.className='lockchip';
+        lk.innerHTML='<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11 V8 a4 4 0 0 1 8 0 v3"/></svg>';
+        b.appendChild(lk);
+      }
+    }
+  });
+
+  (function(){
+    var stair=document.querySelector('.stair'); if(!stair) return;
+    var rungs=Array.prototype.slice.call(stair.querySelectorAll('.rung'));
+    if(!rungs.length) return;
+    var climber=document.createElement('div');
+    climber.className='climber';
+    climber.innerHTML=
+      '<svg viewBox="0 0 38 56">'+
+        '<g class="rk">'+
+          '<path d="M19 3 C27 12 27 30 19 40 C11 30 11 12 19 3 Z" fill="#f5c451" stroke="#9C7B22" stroke-width="1.2"/>'+
+          '<circle cx="19" cy="18" r="4.4" fill="#0a0e27" stroke="#4dd0e1" stroke-width="1.6"/>'+
+          '<path d="M11 32 L5 42 L13 38 Z" fill="#9C7B22"/>'+
+          '<path d="M27 32 L33 42 L25 38 Z" fill="#9C7B22"/>'+
+        '</g>'+
+        '<path class="flame" d="M14 40 Q19 56 24 40 Q19 46 14 40 Z" fill="#4dd0e1"/>'+
+        '<path class="flame" d="M16 40 Q19 50 22 40 Q19 44 16 40 Z" fill="#fff"/>'+
+      '</svg>';
+    stair.appendChild(climber);
+    function posFor(i){
+      var r=rungs[i].getBoundingClientRect(), s=stair.getBoundingClientRect();
+      return { x:(r.left-s.left)+((r.width-38)/2), y:(r.top-s.top)-58 };
+    }
+    function place(i,animate){
+      var p=posFor(i);
+      if(!animate){ climber.style.transition='none'; }
+      climber.style.transform='translate('+p.x+'px,'+p.y+'px)';
+      if(!animate){ void climber.offsetWidth; climber.style.transition=''; }
+    }
+    var cur=0, walkT=null, loopT=null;
+    function stepUp(){
+      if(cur < rungs.length-1){
+        cur++; climber.classList.add('walk'); place(cur,true);
+        clearTimeout(walkT); walkT=setTimeout(function(){climber.classList.remove('walk');},1150);
+        loopT=setTimeout(stepUp, 2350);
+      } else {
+        loopT=setTimeout(function(){
+          climber.classList.remove('walk'); cur=0; place(0,false);
+          loopT=setTimeout(stepUp, 1500);
+        }, 2600);
+      }
+    }
+    function start(){ place(0,false); clearTimeout(loopT); loopT=setTimeout(stepUp, 1300); }
+    window.addEventListener('resize', function(){ place(cur,false); });
+    if(document.readyState==='complete'){ setTimeout(start,350); }
+    else { window.addEventListener('load', function(){ setTimeout(start,350); }); }
+  })();
+
+  // ---------- Calculadora · Meta diaria ----------
+  (function(){
+    var meta=document.getElementById('cMeta'), dias=document.getElementById('cDias'),
+        com=document.getElementById('cCom'), spr=document.getElementById('cSpread');
+    if(!meta) return;
+    function fmt(n){ return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'.'); }
+    function calc(){
+      var m=+meta.value||0, d=+dias.value||0, c=(+com.value||0)/100, s=+spr.value||0;
+      var ftdMes=m*d, ftdAno=ftdMes*12, ganMes=s*c, ganAno=ganMes*12;
+      document.getElementById('oFtdMes').textContent=fmt(ftdMes);
+      document.getElementById('oFtdAno').textContent=fmt(ftdAno);
+      document.getElementById('oClientes').textContent=fmt(ftdAno);
+      document.getElementById('oGanMes').textContent='$'+fmt(ganMes);
+      document.getElementById('oGanAno').textContent='$'+fmt(ganAno);
+    }
+    [meta,dias,com,spr].forEach(function(el){ el.addEventListener('input',calc); el.addEventListener('change',calc); });
+    calc();
+  })();
+</script>
+</body>
+</html>
